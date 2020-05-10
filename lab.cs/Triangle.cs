@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace lab.cs
 {
@@ -120,5 +121,49 @@ namespace lab.cs
             return data;
 
         }
+        //public bool Save(string filename)
+        //{
+        //    try
+        //    {
+        //        FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write);
+        //        // Создаем двоичный поток для записи
+        //        BinaryWriter bw = new BinaryWriter(fs, Encoding.UTF8);
+        //        for (int i = 0; i < points.Length; i++)
+        //        {
+        //            bw.Write(points[i].x);
+        //            bw.Write(points[i].y);
+        //        }
+        //        bw.Close();
+        //        fs.Close();
+        //    }
+        //    catch (IOException exc)
+        //    {
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
+        //public bool Load(string filename)
+        //{
+        //    try
+        //    {
+        //        FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+        //        // Создаем двоичный поток для записи
+        //        BinaryReader br = new BinaryReader(fs, Encoding.UTF8);
+        //        for (int i = 0; i < points.Length; i++)
+        //        {
+        //            points[i].x = br.ReadDouble();
+        //            points[i].y= br.ReadDouble();
+        //        }
+        //        br.Close();
+        //        fs.Close();
+        //    }
+        //    catch (IOException exc)
+        //    {
+        //        return false;
+        //    }
+
+        //    return true;
+        //}
     }
 }
