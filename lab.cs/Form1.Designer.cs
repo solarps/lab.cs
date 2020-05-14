@@ -38,9 +38,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.OutN = new System.Windows.Forms.RichTextBox();
             this.OutM = new System.Windows.Forms.RichTextBox();
-            this.BtnSave2 = new System.Windows.Forms.Button();
             this.BtnOpen1 = new System.Windows.Forms.Button();
-            this.BtnOpen2 = new System.Windows.Forms.Button();
             this.BtnSave1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -148,21 +146,10 @@
             this.OutM.TabIndex = 23;
             this.OutM.Text = "";
             // 
-            // BtnSave2
-            // 
-            this.BtnSave2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnSave2.Location = new System.Drawing.Point(616, 79);
-            this.BtnSave2.Name = "BtnSave2";
-            this.BtnSave2.Size = new System.Drawing.Size(102, 38);
-            this.BtnSave2.TabIndex = 24;
-            this.BtnSave2.Text = "Save";
-            this.BtnSave2.UseVisualStyleBackColor = true;
-            this.BtnSave2.Click += new System.EventHandler(this.BtnSave2_Click);
-            // 
             // BtnOpen1
             // 
             this.BtnOpen1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnOpen1.Location = new System.Drawing.Point(96, 80);
+            this.BtnOpen1.Location = new System.Drawing.Point(686, 303);
             this.BtnOpen1.Name = "BtnOpen1";
             this.BtnOpen1.Size = new System.Drawing.Size(102, 38);
             this.BtnOpen1.TabIndex = 25;
@@ -170,21 +157,10 @@
             this.BtnOpen1.UseVisualStyleBackColor = true;
             this.BtnOpen1.Click += new System.EventHandler(this.BtnOpen1_Click);
             // 
-            // BtnOpen2
-            // 
-            this.BtnOpen2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnOpen2.Location = new System.Drawing.Point(508, 80);
-            this.BtnOpen2.Name = "BtnOpen2";
-            this.BtnOpen2.Size = new System.Drawing.Size(102, 38);
-            this.BtnOpen2.TabIndex = 26;
-            this.BtnOpen2.Text = "Open";
-            this.BtnOpen2.UseVisualStyleBackColor = true;
-            this.BtnOpen2.Click += new System.EventHandler(this.BtnOpen2_Click);
-            // 
             // BtnSave1
             // 
             this.BtnSave1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.BtnSave1.Location = new System.Drawing.Point(204, 80);
+            this.BtnSave1.Location = new System.Drawing.Point(686, 347);
             this.BtnSave1.Name = "BtnSave1";
             this.BtnSave1.Size = new System.Drawing.Size(102, 38);
             this.BtnSave1.TabIndex = 27;
@@ -198,9 +174,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.BtnSave1);
-            this.Controls.Add(this.BtnOpen2);
             this.Controls.Add(this.BtnOpen1);
-            this.Controls.Add(this.BtnSave2);
             this.Controls.Add(this.OutM);
             this.Controls.Add(this.OutN);
             this.Controls.Add(this.label4);
@@ -229,9 +203,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.RichTextBox OutN;
         private System.Windows.Forms.RichTextBox OutM;
-        private System.Windows.Forms.Button BtnSave2;
         private System.Windows.Forms.Button BtnOpen1;
-        private System.Windows.Forms.Button BtnOpen2;
         private System.Windows.Forms.Button BtnSave1;
     }
 }

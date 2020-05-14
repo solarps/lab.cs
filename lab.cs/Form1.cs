@@ -14,7 +14,11 @@ namespace lab.cs
     public partial class Form1 : Form
     {
         public int n, m;
+        public int l = 0;
         //Triangle triangle;
+        Triangle[] triangle;
+        Equilateral[] equilaterals;
+        Equilateral equilateral;
         public int N { get => n; set => n = value; }
         public int M { get => m; set => m = value; }
         public Form1()
@@ -70,7 +74,7 @@ namespace lab.cs
             }
             
 
-            Triangle[] triangle = new Triangle[N];
+            triangle = new Triangle[N];
             int seed = 0;
             for (int i = 0; i < n; i++)
             {
@@ -79,37 +83,42 @@ namespace lab.cs
                     triangle[i] = new Triangle(seed++);
                     triangle[i].SideLength();
                     triangle[i].GetAngles();
+                    triangle[i].GetPerimeter();
+                    triangle[i].GetSquare();
                 } while (!triangle[i].IsExists());
                 OutN.Text += "NUMBER: " + (i + 1)+"\n";
                 //Console.WriteLine("NUMBER: " + (i + 1));
                 OutN.Text += triangle[i].PrintData();
                 OutN.Text += "----------------------------\n";
             }
-            OutN.Text += "Equal triangles: \n";
-            int q = 0;
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = i + 1; j < n; j++)
+            if (N != 0) {
+                OutN.Text += "Equal triangles: \n";
+                int q = 0;
+                for (int i = 0; i < n; i++)
                 {
-                    bool isEqual = true;
-                    for (int k = 0; k < 3; k++)
+                    for (int j = i + 1; j < n; j++)
                     {
-                        if (triangle[i].side[k] != triangle[j].side[k])
+                        bool isEqual = true;
+                        for (int k = 0; k < 3; k++)
                         {
-                            isEqual = false;
-                            break;
+                            if (triangle[i].side[k] != triangle[j].side[k])
+                            {
+                                isEqual = false;
+                                break;
+                            }
+                        }
+                        if (isEqual)
+                        {
+                            q++;
+                            OutN.Text += $"{i + 1} {j + 1}";
                         }
                     }
-                    if (isEqual)
-                    {
-                        q++;
-                        OutN.Text += $"{i + 1} {j + 1}";
-                    }
                 }
+                if (q == 0) OutN.Text += "No equal triangles\n";
             }
-            if (q == 0) OutN.Text += "No equal triangles\n";
+                
 
-            Equilateral[] equilaterals = new Equilateral[m];
+            equilaterals = new Equilateral[m];
 
             for (int i = 0; i < m; i++)
             {
@@ -118,6 +127,8 @@ namespace lab.cs
                     equilaterals[i] = new Equilateral(seed++);
                     equilaterals[i].SideLength();
                     equilaterals[i].GetAngles();
+                    equilaterals[i].GetPerimeter();
+                    equilaterals[i].GetSquare();
                 } while (!equilaterals[i].IsEqualSide() || !equilaterals[i].IsExists());
                 OutM.Text += "NUMBER: " + (i + 1)+"\n";
                 OutM.Text += equilaterals[i].PrintData(); 
@@ -127,7 +138,6 @@ namespace lab.cs
             if (m != 0)
             {
                 double min = 1000000000;
-                int l = 0;
                 OutM.Text += "Smaller median triangle: ";
                 for (int i = 0; i < m; i++)
                 {
@@ -137,6 +147,8 @@ namespace lab.cs
                         l = i;
                     }
                 }
+                equilateral = new Equilateral();
+                equilateral = equilaterals[l];
                 OutM.Text += "NUMBER: " + (l + 1)+"\n";
                 OutM.Text += equilaterals[l].PrintData();
                 OutM.Text += $"Median =  { equilaterals[l].GetMed():N2}\n"; 
@@ -171,26 +183,41 @@ namespace lab.cs
                 return;
             // получаем выбранный файл
             string filename = openFileDialog1.FileName;
-            // читаем файл в строку
-            string fileText = System.IO.File.ReadAllText(filename);
-            OutN.Text = fileText;
-            MessageBox.Show("Файл открыт");
-        }
+            //файловый поток
+            FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            //бинарный  считователь
+            BinaryReader br = new BinaryReader(fs, Encoding.UTF8);
 
-        private void BtnOpen2_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            openFileDialog1.Filter = "Text files(*.txt)|*.txt|Word Documents| *.doc|All files (*.*)|*.*";
-            if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
-                return;
-            // получаем выбранный файл
-            string filename = openFileDialog1.FileName;
-            // читаем файл в строку
-            string fileText = System.IO.File.ReadAllText(filename);
-            OutM.Text = fileText;
-            MessageBox.Show("Файл открыт");
-        }
+            //инициализируем массив кол-вом значенний 
+            N = br.ReadInt32();
+            M = br.ReadInt32();
+            
+            triangle = new Triangle[N];
+            for (int i = 0; i < N; i++)
+            {
+                //Считываем значения с файла
+                triangle[i] = new Triangle();
+                triangle[i] = triangle[i].Read(br);
+            }
+            equilaterals = new Equilateral[M];
+            for (int i = 0; i < M; i++)
+            {
+                //Считываем значения с файла
+                equilaterals[i] = new Equilateral();
+                equilaterals[i] = equilaterals[i].Read(br);
+            }
+            Show();
 
+            if (M != 0) {
+                equilateral = new Equilateral();
+                equilateral = equilateral.Read(br);
+                OutM.Text += equilateral.PrintData();
+            }
+            br.Close();
+            fs.Close();
+
+            MessageBox.Show("Файл открыт"); 
+        }
         private void BtnSave1_Click(object sender, EventArgs e)
         {
             if (N != 0)
@@ -203,25 +230,25 @@ namespace lab.cs
 
                 if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
                     return;
-                //// получаем выбранный файл
-                //if (triangle.Save(saveFileDialog1.FileName) == true)
-                //    MessageBox.Show("Файл сохранен");
-                //else
-                //    MessageBox.Show("Сохранение не удалось");
                 string filename = saveFileDialog1.FileName;
-                // сохраняем текст в файл
-                if (filename != "")
-                {
-                    using (StreamWriter sw = new StreamWriter(saveFileDialog1.OpenFile()))
-                    {
-                        sw.Write("Triangles:\n");
-                        sw.Write(OutN.Text);
-
-                    }
-                }
-                //System.IO.File.WriteAllText(filename, OutM.Text);
-                //System.IO.File.WriteAllText(filename, OutN.Text);
+                //файловый поток
+                FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write);
+                //бинарный записователь 
+                BinaryWriter bw = new BinaryWriter(fs, Encoding.UTF8);
+                Write(bw);
+                bw.Close();
+                fs.Close();
                 MessageBox.Show("Файл сохранен");
+                //// сохраняем текст в файл
+                //if (filename != "")
+                //{
+                //    using (StreamWriter sw = new StreamWriter(saveFileDialog1.OpenFile()))
+                //    {
+                //        sw.Write("Triangles:\n");
+                //        sw.Write(OutN.Text);
+
+                //    }
+                //}
             }
             else MessageBox.Show("Введите кол-во треугольников");
         }
@@ -229,6 +256,43 @@ namespace lab.cs
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void Write(BinaryWriter bw)
+        {
+            bw.Write(N);
+            bw.Write(M);
+            for (int i = 0; i < N; i++)
+            {
+                triangle[i].Write(bw);
+            }
+            for (int i = 0; i < M; i++)
+            {
+                equilaterals[i].Write(bw);
+            }
+            if (M!= 0)
+            {
+                equilateral.Write(bw);
+            }
+        }
+        public void Show()
+        {
+            OutN.Text = "";
+            OutM.Text = "";
+            for (int i = 0; i < N; i++)
+            {
+                OutN.Text += "NUMBER: " + (i + 1) + "\n";
+                //Console.WriteLine("NUMBER: " + (i + 1));
+                OutN.Text += triangle[i].PrintData();
+                OutN.Text += "----------------------------\n";
+            }
+            for (int i = 0; i < M; i++)
+            {
+                OutM.Text += "NUMBER: " + (i + 1) + "\n";
+                OutM.Text += equilaterals[i].PrintData();
+                OutM.Text += $"Median =  { equilaterals[i].GetMed():N2}\n";
+                OutM.Text += "----------------------------\n";
+            }
         }
     }
 }
